@@ -1,0 +1,9 @@
+nfilemax 99999999
+first 100184
+last 100184
+output cernrun_si_100184.hbook
+output_directory run_10gev
+display_event 0
+
+
+
