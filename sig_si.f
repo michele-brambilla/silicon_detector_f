@@ -21,29 +21,6 @@
       else  !! da qui eseguo se NON sono eventi LED
       
 ***************************camere [Si] ********************************
-
-         cut1(1)=20
-         cut1(2)=20
-         cut1(3)=7
-         cut1(4)=20
-         cut1(5)=20
-
-         cut2(1)=5
-         cut2(2)=5
-         cut2(3)=4
-         cut2(4)=5
-         cut2(5)=5
-
-*         cut1(1)=0
-*         cut1(2)=0
-*         cut1(3)=0
-*         cut1(4)=0
-*         cut1(5)=0
-*         cut2(1)=0
-*         cut2(2)=0
-*         cut2(3)=0
-*         cut2(4)=0
-*         cut2(5)=0
          
          do istrip=1,384
             raw(istrip,1)=IVFAS_DATA1(is+istrip)    !!telescope 1_x

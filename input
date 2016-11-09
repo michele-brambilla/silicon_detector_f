@@ -1,7 +1,7 @@
-nfilemax 100
-first 100184
-last 100184
-output cernrun_si_100184.hbook
+nfilemax 1000
+first 100159
+last 100159
+output cernrun_si_100159.hbook
 output_directory run_10gev
 display_event 0
 

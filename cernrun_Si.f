@@ -12,10 +12,21 @@
       character*50 ctmp
       
       integer nfilemax,firstrun,lastrun
-
+      real tmp
 !     INIZIALIZZO
+
+      open(unit=5,file='cut.txt',iostat=istat,status='old')
+      do isili=1,5
+         read(5,*),cut1(isili),cut2(isili)
+      end do
+      close(5)
+      do isili=1,Nsilicio
+         print *,isili,cut1(isili),cut2(isili)
+      end do
+      
       call ini_pitch
 
+      
 !     tiene traccia dell'evento nei LED       
       lastevent=0
       
@@ -23,8 +34,8 @@
       
 !     legge in "input" le informazioni per il run
       call parse(nfilemax,firstrun,lastrun,output,output_dir,do_display)
-      
 
+      
 ********************************************************      
 ********************************************************
 
@@ -48,6 +59,7 @@
          call hplint(1)
       endif
 
+      
 
 ************ j è l'id del run --> INPUT **************
  3333 do j=firstrun,lastrun               
@@ -100,7 +112,7 @@ cc               endif
 
       
 !     stampo a terminale informazioni
-      print *
+ 4096 print *
       print *
       print *,"Fine analisi"
       print *

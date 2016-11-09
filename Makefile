@@ -7,14 +7,14 @@ AR=ar rcs
 CXXFLAGS = -DDO_DEBUG -ggdb -O0
 FFLAGS = -ggdb -O0
 
-LIBS  = `cernlib -safe packlib pawlib`
+LIBS  = `cernlib packlib pawlib graflib`
 LDFLAGS = -L/usr/lib
 
 INCLUDE = -Wcpp -Irapidjson/include
 
 
 CXX = g++-4.8 -std=c++11 --fast-math -Wno-cpp -Df2cFortran
-FF = gfortran-4.8 -Df2cFortran
+FF = gfortran-mp-4.8 -Df2cFortran
 
 headers = common.inc variabili.inc
 
