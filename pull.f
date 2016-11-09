@@ -64,13 +64,11 @@ cc         call hf1(1000*isilicio+1,float(imax),1.0) ! posizione del pull
 
             if (subraw(istrip,isilicio).gt.cut1(isilicio)*subrms(istrip
      $           ,isilicio)) then
-               call hfill(100000*isilicio+10000,float(izone) 
-     $              ,subraw(istrip,isilicio),1.0) ! ph-2d
-            end if       
             
-            if (subraw(istrip,isilicio).gt.ph_max) then
-               ph_max=subraw(istrip,isilicio)
-               imax(isilicio)=istrip
+               if (subraw(istrip,isilicio).gt.ph_max) then
+                  ph_max=subraw(istrip,isilicio)
+                  imax(isilicio)=istrip
+               end if
             end if
             
          enddo !istrip
@@ -83,6 +81,8 @@ cc         call hf1(1000*isilicio+1,float(imax),1.0) ! posizione del pull
 
          if (pull.gt.cut1(isilicio))then
             call hfill(100000*isilicio+10001,float(izone),pull,1.0) ! pull-2d
+            call hfill(100000*isilicio+10000,float(izone),ph_max,1.0) ! ph-2d
+
 cc          call hf1(1000*isilicio+1,float(imax),1.0) ! posizione del pull
 
             call pullLR_basculo(izone)
