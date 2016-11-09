@@ -183,16 +183,19 @@ cc          call hf1(1000*isilicio+1,float(imax),1.0) ! posizione del pull
       
       nb(1)=-1
       if( (imax(isilicio).gt.1) ) then
-         if (subraw(imax(isilicio)-1,isilicio).gt.cut2(isilicio)
-     $        *subrms(imax(isilicio)-1,isilicio)) then
+*         if (subraw(imax(isilicio)-1,isilicio).gt.cut2(isilicio)
+*     $        *subrms(imax(isilicio)-1,isilicio)) then
+         if (subraw(imax(isilicio)-1,isilicio).gt.0) then
             nb(1)=subraw(imax(isilicio)-1,isilicio)
          end if
       end if
       
       nb(2)=-1
       if( imax(isilicio).lt.Nstrip ) then
-         if (subraw(imax(isilicio)+1,isilicio).gt.cut2(isilicio)
-     $        *subrms(imax(isilicio)+1,isilicio)) then
+*         if (subraw(imax(isilicio)+1,isilicio).gt.cut2(isilicio)
+*     $        *subrms(imax(isilicio)+1,isilicio)) then
+         if (subraw(imax(isilicio)+1,isilicio).gt.0) then
+
             nb(2)=subraw(imax(isilicio)+1,isilicio)
          end if
       end if

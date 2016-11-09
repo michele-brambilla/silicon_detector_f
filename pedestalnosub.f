@@ -20,7 +20,6 @@
       
       call hlimit(NWPAWC)
 
-
       call getarg(1, in)
       if(len_trim(in).ne.0) then
          nomefile = in
@@ -121,15 +120,28 @@ c     riempie il profilo
       
 c     scrivo anche l'output formattato
       open(unit=10,file=outxt,form='formatted')
-
       do i=1,5
          do istrip=1,384
             write(10,'(2(F15.5))'), pede(istrip,i), rms(istrip,i)
          enddo
       end do
-      
       close(10)
 
+      do i=1,5
+         if(.not.(i.eq.3)) then
+            call status_tele(i)
+            print *,''
+         else
+            call status_basculo(i)
+         end if
+      end do
+
+      open(unit=10,file='status_test.dat',form='formatted')
+      do istrip=1,384
+         write(10,*), srms(istrip,:)
+      enddo
+      close(10)
+      
       end program pedestalnosub
 
 
@@ -166,10 +178,159 @@ c     scrivo anche l'output formattato
       
       close(11)
 
-
-
       end subroutine profilo
 
 
 
+      subroutine status_tele(isili)
+      implicit none
 
+      real pede(384,6), spede(384,6)
+      real rms(384,6),  srms(384,6)
+      real iraw_tmp(384,6)
+      common/xpede/pede,rms,spede,srms,iraw_tmp
+
+
+      real array(384)
+      real snr(384)
+
+      real average,sd
+      real average1,sd1
+      integer,intent(in) :: isili
+      integer iasic,first,last,istrip
+
+      array=rms(:,isili)
+      snr=pede(:,isili)/rms(:,isili)
+      
+      do iasic=0,2
+         first = 128*iasic+1
+         last = 128*(iasic+1)
+         
+         average = sum(array(first:last))/128.0
+         sd = sqrt(sum(array(first:last)**2)/128.0 - average*average)
+         average1 = sum(snr(first:last))/128.0
+         sd1 = sqrt(sum(snr(first:last)**2)/128.0 - average1*average1)
+*         print *,"Average:",average,average1,"Standard Deviation",sd,sd1
+
+         do istrip = first,last
+            if( (array(istrip) < average-4*sd).or.(array(istrip) >
+     $           average+4*sd).or.
+     $           (snr(istrip) < average1-3*sd1).or.(snr(istrip) >
+     $           average1+3*sd1) ) then
+               print *,isili,',',istrip,
+     $              average-4*sd,array(istrip),average+4*sd,',',
+     $              average1-3*sd1,snr(istrip),average1+3*sd1
+               srms(istrip,isili) = 1
+            end if
+         end do
+      enddo
+      
+      end subroutine status_tele
+
+
+      subroutine status_basculo(isili)
+      implicit none
+
+      real pede(384,6), spede(384,6)
+      real rms(384,6),  srms(384,6)
+      real iraw_tmp(384,6)
+      common/xpede/pede,rms,spede,srms,iraw_tmp
+
+
+      real array(384)
+      real snr(384)
+
+      real average,sd
+      real average1,sd1
+      integer,intent(in) :: isili
+      integer iasic,first,last,istrip
+
+      array=rms(:,isili)
+      snr=pede(:,isili)/rms(:,isili)
+      
+      do iasic=0,1
+         first = 64*iasic+1
+         last = 64*(iasic+1)
+         average = sum(array(first:last))/64.0
+         sd = sqrt(sum(array(first:last)**2)/64.0 - average*average)
+         average1 = sum(snr(first:last))/64.0
+         sd1 = sqrt(sum(snr(first:last)**2)/64.0 - average1*average1)
+         print *, array(first:last)
+*     do istrip = first,last
+*            if( (array(istrip) < average-4*sd).or.(array(istrip) >
+*     $           average+4*sd).or.
+*     $           (snr(istrip) < average1-3*sd1).or.(snr(istrip) >
+*     $           average1+3*sd1) ) then
+*               print *,isili,',',istrip,
+*     $              average-4*sd,array(istrip),average+4*sd,',',
+*     $              average1-3*sd1,snr(istrip),average1+3*sd1
+*               srms(istrip,isili) = 1
+*            end if
+*         end do
+      enddo
+
+      read *,iasic
+      iasic = 2
+      first = 64*iasic+1
+      last = first+59
+      print *, array(first:last)
+      average = sum(array(first:last))/59.0
+      sd = sqrt(sum(array(first:last)**2)/59.0 - average*average)
+      average1 = sum(snr(first:last))/59.0
+      sd1 = sqrt(sum(snr(first:last)**2)/59.0 - average1*average1)
+      do istrip = first,last
+         if( (array(istrip) < average-4*sd).or.(array(istrip) >
+     $        average+4*sd).or.
+     $        (snr(istrip) < average1-3*sd1).or.(snr(istrip) >
+     $        average1+3*sd1) ) then
+            print *,isili,',',istrip,
+     $           average-4*sd,array(istrip),average+4*sd,',',
+     $           average1-3*sd1,snr(istrip),average1+3*sd1
+            srms(istrip,isili) = 1
+         end if
+      end do
+
+      read *,iasic
+      iasic = 3
+      first = 64*iasic+1
+      last = 64*(iasic+1)
+      print *, array(first:last)
+      average = sum(array(first:last))/128.0
+      sd = sqrt(sum(array(first:last)**2)/64.0 - average*average)
+      average1 = sum(snr(first:last))/128.0
+      sd1 = sqrt(sum(snr(first:last)**2)/64.0 - average1*average1)
+      do istrip = first,last
+         if( (array(istrip) < average-4*sd).or.(array(istrip) >
+     $        average+4*sd).or.
+     $        (snr(istrip) < average1-3*sd1).or.(snr(istrip) >
+     $        average1+3*sd1) ) then
+            print *,isili,',',istrip,
+     $           average-4*sd,array(istrip),average+4*sd,',',
+     $           average1-3*sd1,snr(istrip),average1+3*sd1
+            srms(istrip,isili) = 1
+         end if
+      end do
+
+      iasic = 4
+      first = 64*iasic+1
+      last = first+16
+      average = sum(array(first:last))/16.0
+      sd = sqrt(sum(array(first:last)**2)/16.0 - average*average)
+      average1 = sum(snr(first:last))/16.0
+      sd1 = sqrt(sum(snr(first:last)**2)/16.0 - average1*average1)
+*     print *,"Average:",average,average1,"Standard Deviation",sd,sd1
+      do istrip = first,last
+         if( (array(istrip) < average-4*sd).or.(array(istrip) >
+     $        average+4*sd).or.
+     $        (snr(istrip) < average1-3*sd1).or.(snr(istrip) >
+     $        average1+3*sd1) ) then
+            print *,isili,',',istrip,
+     $           average-4*sd,array(istrip),average+4*sd,',',
+     $           average1-3*sd1,snr(istrip),average1+3*sd1
+            srms(istrip,isili) = 1
+         end if
+      end do
+
+
+      
+      end subroutine status_basculo
