@@ -78,26 +78,26 @@
          sigma=0
          ph_max=0.
          icmax=0
-*         do while(icluster(istrip).eq.1)
-*            call hf1(1000*isilicio+68,subraw(istrip,isilicio),1.0)
-*
-*            ampiezza=ampiezza+
-*     &           subraw(istrip,isilicio)
-*            nrS=nrS+1
-*            centro=centro+(subraw(istrip,isilicio)*x_conv(istrip
-*    $              ,isilicio))
-*            sigma=sigma+(subrms(istrip,isilicio))**2
-*            if (subraw(istrip,isilicio).gt.ph_max) then
-*               ph_max=subraw(istrip,isilicio)
-*               icmax=istrip
-*            end if   
-*
-*            istrip = istrip+1
-*            if (istrip.gt.Nstrip) then
-*               goto 1234
-*            end if
-*
-*         end do
+         do while(icluster(istrip).eq.1)
+            call hf1(1000*isilicio+68,subraw(istrip,isilicio),1.0)
+
+            ampiezza=ampiezza+
+     &           subraw(istrip,isilicio)
+            nrS=nrS+1
+            centro=centro+(subraw(istrip,isilicio)*x_conv(istrip
+     $           ,isilicio))
+            sigma=sigma+(subrms(istrip,isilicio))**2
+            if (subraw(istrip,isilicio).gt.ph_max) then
+               ph_max=subraw(istrip,isilicio)
+               icmax=istrip
+            end if   
+
+            istrip = istrip+1
+            if (istrip.gt.Nstrip) then
+               goto 1234
+            end if
+
+         end do
 
          baricentro_mc(isilicio,ic)=centro/ampiezza
          ampiezza_mc(isilicio,ic)=ampiezza            
@@ -106,8 +106,8 @@
          snr=ampiezza/(noise*
      +        sqrt(real(nrS)))
 
-         print *,"cluster",ic,"baricentro",baricentro_mc(isilicio,ic)
-     $        ,"snr",snr
+*         print *,"cluster",ic,"baricentro",baricentro_mc(isilicio,ic)
+*     $        ,"snr",snr
          
          if(icmax.gt.0)then
             pull=ph_max/subrms(icmax,isilicio)

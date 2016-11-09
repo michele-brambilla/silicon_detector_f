@@ -1,28 +1,58 @@
+SHELL = /bin/zsh
+AR=ar rcs
 
-LIBS =-lpawlib -lmathlib -lgraflib -lgrafX11 -lpacklib -lX11 -L/sw/lib
+.SUFFIXES:
+.SUFFIXES: .f .o
 
-OPT=-m64 # -Wall
+CXXFLAGS = -DDO_DEBUG -ggdb -O0
+FFLAGS = -ggdb -O0
 
-FLAG=-ggdb -g
+LIBS  = `cernlib -safe packlib pawlib`
+LDFLAGS = -L/usr/lib
 
-src=status.f prepara_histo_si.f pull.f basculo.f cluster.f cluster_basculo.f
+INCLUDE = -Wcpp -Irapidjson/include
 
-all: cernrun_Si
 
-cernrun_Si: cernrun_Si.f $(src) sig_si.f common.inc variabili.inc
-	gfortran $(OPT) -o cernrun_Si cernrun_Si.f $(src) sig_si.f $(LIBS) $(FLAG)
+CXX = g++-4.8 -std=c++11 --fast-math -Wno-cpp -Df2cFortran
+FF = gfortran-4.8 -Df2cFortran
 
-pedestal: pedestal.f common.inc
-	gfortran $(OPT) -o pedestal pedestal.f $(LIBS) $(FLAG)
+headers = common.inc variabili.inc
 
-pedestal1: pedestal1.f common.inc
-	gfortran $(OPT) -o pedestal1 pedestal1.f $(LIBS) $(FLAG)
+objects = sig_si.o status.o pull.o prepara_histo_si.o \
+	 basculo.o cluster.o cluster_basculo.o
 
-pedestalnosub: pedestalnosub.f common.inc
-	gfortran $(OPT) -o pedestalnosub pedestalnosub.f $(LIBS) $(FLAG)
+mains = cernrun_Si.o pedestal.o pedestalnosub.o pedestalsub.o
 
-pedestalsub: pedestalsub.f common.inc
-	gfortran $(OPT) -o pedestalsub pedestalsub.f $(LIBS) $(FLAG)
+exe = $(patsubst %.o,%,$(mains))
 
+all: $(exe)
+
+$(objects): %.o : %.f $(headers)
+	$(FF) $(FFLAGS) -c $< -I.
+
+$(mains): %.o : %.f $(headers)
+	$(FF) $(FFLAGS) -c $< -I.
+
+$(exe): $(mains) $(objects) $(headers)
+	$(FF) $(LDFLAGS) -o $@ $@.o $(objects) $(LIBS)
+
+.PHONY : clean
+
+
+#cernrun_Si: cernrun_Si.f $(src) sig_si.f common.inc variabili.inc
+#	gfortran $(OPT) -o cernrun_Si cernrun_Si.f $(src) sig_si.f $(LIBS) $(FLAG)
+#
+#pedestal: pedestal.f common.inc
+#	gfortran $(OPT) -o pedestal pedestal.f $(LIBS) $(FLAG)
+#
+#pedestal1: pedestal1.f common.inc
+#	gfortran $(OPT) -o pedestal1 pedestal1.f $(LIBS) $(FLAG)
+#
+#pedestalnosub: pedestalnosub.f common.inc
+#	gfortran $(OPT) -o pedestalnosub pedestalnosub.f $(LIBS) $(FLAG)
+#
+#pedestalsub: pedestalsub.f common.inc
+#	gfortran $(OPT) -o pedestalsub pedestalsub.f $(LIBS) $(FLAG)
+#
 clean:
 	rm *.o cernrun_Si pedestal

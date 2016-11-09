@@ -18,17 +18,12 @@
 
 !     tiene traccia dell'evento nei LED       
       lastevent=0
-
-
-
       
       call hlimit(99999999)
       
 !     legge in "input" le informazioni per il run
       call parse(nfilemax,firstrun,lastrun,output,output_dir,do_display)
       
-
-
 
 ********************************************************      
 ********************************************************
@@ -148,9 +143,9 @@ cc               endif
             x_conv(istrip,isilicio)=x_conv(istrip-1,isilicio)+0.005 ! cm
          enddo
       enddo
-      do istrip=1,384
-         print *,istrip,x_conv(istrip,1:2),x_conv(istrip,4:5)
-      end do
+*      do istrip=1,384
+*         print *,istrip,x_conv(istrip,1:2),x_conv(istrip,4:5)
+*      end do
       
       isilicio=3
       open(unit=5,file='silidampe.dat',iostat=istat,status='old')
@@ -185,8 +180,9 @@ cc               endif
 **** I4.4= 4caratteri su cui gira e.4 dice che se è <4 riempie a sx con 0
 
       write(filename, "(A7,I6.6,A9)")
-     +     "raw/run",j,"_pede.dat"
+     +     "rax/run",j,"_pede.dat"
 
+      print *,filename
       open (unit=5,file=trim(filename)
      +     ,iostat=istat,status='old')
 ********* se istat è =/ da 0 -->> significa che nn riesce a leggere il file

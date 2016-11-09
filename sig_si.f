@@ -12,6 +12,7 @@
 
       character chline(1)
 
+
 !     se SONO eventi LED
       if ( INFO_PLUS(2).lt.0 )then 
          
@@ -21,16 +22,28 @@
       
 ***************************camere [Si] ********************************
 
-         cut1(1)=20
-         cut2(1)=5
-         cut1(2)=50
-         cut2(2)=5
-         cut1(3)=7
-         cut2(3)=4
-         cut1(4)=8
-         cut2(4)=5
-         cut1(5)=10
-         cut2(5)=5
+*         cut1(1)=20
+*         cut1(2)=50
+*         cut1(3)=7
+*         cut1(4)=8
+*         cut1(5)=10
+*
+*         cut2(1)=5
+*         cut2(2)=5
+*         cut2(3)=4
+*         cut2(4)=5
+*         cut2(5)=5
+
+         cut1(1)=0
+         cut1(2)=0
+         cut1(3)=0
+         cut1(4)=0
+         cut1(5)=0
+         cut2(1)=0
+         cut2(2)=0
+         cut2(3)=0
+         cut2(4)=0
+         cut2(5)=0
          
          do istrip=1,384
             raw(istrip,1)=IVFAS_DATA1(is+istrip)    !!telescope 1_x
@@ -39,18 +52,12 @@
             raw(istrip,5)=IVFAS_DATA6(is+istrip)    !!telescope 2_y
          enddo
 
-         do istrip=1,384
-            print *,subpede(istrip,1),subraw(istrip,1)
-         end do
-            
          do istrip=1,272
             raw(istrip,3)=IVFAS_DATA3(is+istrip)    !!basculo
          enddo
          
          call calcolasubraw_sil_telescope !camere [Si]
          call calcolasubraw_sil_basculo   !camere [Si]
-
-
 
          
 *******!!! cerco CLUSTER sui Silici 
@@ -59,7 +66,7 @@
             if (isilicio.eq.3) then
                call calcolapull_basculo !!sub in pull.f
             endif
-               
+            
             call calcolapull(isilicio) !!sub in pull.f
 
             if (isilicio.eq.3) then
@@ -70,6 +77,8 @@
             
          end do
          
+
+
       endif                     !chiudo 'if' eventi LED
 
 
@@ -136,7 +145,7 @@
 
             end do              ! asic
 
-            print *,cm
+*            print *,cm
             
          endif
       end do                    ! silicio

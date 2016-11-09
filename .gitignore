@@ -1,2 +1,6 @@
 *.his, *.dat, *.txt, *.hbook
-*.Â~
+*~
+*.o
+*.eps, *.ps
+raw
+rax
