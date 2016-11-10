@@ -304,7 +304,8 @@ c     scrivo anche l'output formattato
 
          cmBasculo(iasic)=iraw_tmp(1+(iasic-1)*64,3)-pede(1+(iasic-1)
      $        *64,3)            !!!punto di partenza dell'asic
-         
+
+
          if (iasic.lt.5) then
             if (.NOT.(iasic.eq.3)) then
                

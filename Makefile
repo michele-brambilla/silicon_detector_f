@@ -21,7 +21,7 @@ headers = common.inc variabili.inc
 objects = sig_si.o status.o pull.o prepara_histo_si.o \
 	 basculo.o cluster.o cluster_basculo.o
 
-mains = cernrun_Si.o pedestal.o pedestalnosub.o pedestalsub.o
+mains = cernrun_Si.o pedestal.o pedestalnosub.o
 
 exe = $(patsubst %.o,%,$(mains))
 
@@ -55,4 +55,4 @@ $(exe): $(mains) $(objects) $(headers)
 #	gfortran $(OPT) -o pedestalsub pedestalsub.f $(LIBS) $(FLAG)
 #
 clean:
-	rm *.o cernrun_Si pedestal
+	rm *.o cernrun_Si pedestal pedestalnosub

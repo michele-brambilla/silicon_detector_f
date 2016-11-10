@@ -136,10 +136,16 @@ c     scrivo anche l'output formattato
          end if
       end do
 
-      open(unit=10,file='status_test.dat',form='formatted')
-      do istrip=1,384
-         write(10,*), srms(istrip,:)
-      enddo
+      outfile(5:10)="status"
+      outfile(11:)=outxt(8:)
+      print *,trim(outfile)
+      open(unit=10,file=trim(outfile),form='formatted')
+      do isili=1,5
+         do istrip=1,384
+            write(10,*), srms(istrip,isili)
+         end do
+      end do
+         
       close(10)
       
       end program pedestalnosub
@@ -210,16 +216,11 @@ c     scrivo anche l'output formattato
          sd = sqrt(sum(array(first:last)**2)/128.0 - average*average)
          average1 = sum(snr(first:last))/128.0
          sd1 = sqrt(sum(snr(first:last)**2)/128.0 - average1*average1)
-*         print *,"Average:",average,average1,"Standard Deviation",sd,sd1
-
          do istrip = first,last
             if( (array(istrip) < average-4*sd).or.(array(istrip) >
      $           average+4*sd).or.
      $           (snr(istrip) < average1-3*sd1).or.(snr(istrip) >
      $           average1+3*sd1) ) then
-               print *,isili,',',istrip,
-     $              average-4*sd,array(istrip),average+4*sd,',',
-     $              average1-3*sd1,snr(istrip),average1+3*sd1
                srms(istrip,isili) = 1
             end if
          end do
@@ -236,7 +237,6 @@ c     scrivo anche l'output formattato
       real iraw_tmp(384,6)
       common/xpede/pede,rms,spede,srms,iraw_tmp
 
-
       real array(384)
       real snr(384)
 
@@ -247,6 +247,7 @@ c     scrivo anche l'output formattato
 
       array=rms(:,isili)
       snr=pede(:,isili)/rms(:,isili)
+      srms(:,isili)=1
       
       do iasic=0,1
          first = 64*iasic+1
@@ -255,79 +256,65 @@ c     scrivo anche l'output formattato
          sd = sqrt(sum(array(first:last)**2)/64.0 - average*average)
          average1 = sum(snr(first:last))/64.0
          sd1 = sqrt(sum(snr(first:last)**2)/64.0 - average1*average1)
-         print *, array(first:last)
-*     do istrip = first,last
-*            if( (array(istrip) < average-4*sd).or.(array(istrip) >
-*     $           average+4*sd).or.
-*     $           (snr(istrip) < average1-3*sd1).or.(snr(istrip) >
-*     $           average1+3*sd1) ) then
-*               print *,isili,',',istrip,
-*     $              average-4*sd,array(istrip),average+4*sd,',',
-*     $              average1-3*sd1,snr(istrip),average1+3*sd1
-*               srms(istrip,isili) = 1
-*            end if
-*         end do
+         do istrip = first,last
+            if( .not.((array(istrip) < average-5*sd).or.(array(istrip) >
+     $           average+5*sd).or.
+     $           (snr(istrip) < average1-4*sd1).or.(snr(istrip) >
+     $           average1+4*sd1)) ) then
+               srms(istrip,isili) = 0
+            end if
+         end do
       enddo
 
-      read *,iasic
       iasic = 2
       first = 64*iasic+1
       last = first+59
-      print *, array(first:last)
       average = sum(array(first:last))/59.0
       sd = sqrt(sum(array(first:last)**2)/59.0 - average*average)
       average1 = sum(snr(first:last))/59.0
       sd1 = sqrt(sum(snr(first:last)**2)/59.0 - average1*average1)
       do istrip = first,last
-         if( (array(istrip) < average-4*sd).or.(array(istrip) >
-     $        average+4*sd).or.
-     $        (snr(istrip) < average1-3*sd1).or.(snr(istrip) >
-     $        average1+3*sd1) ) then
-            print *,isili,',',istrip,
-     $           average-4*sd,array(istrip),average+4*sd,',',
-     $           average1-3*sd1,snr(istrip),average1+3*sd1
-            srms(istrip,isili) = 1
+         if( .not.((array(istrip) < average-5*sd).or.(array(istrip) >
+     $        average+5*sd).or.
+     $        (snr(istrip) < average1-4*sd1).or.(snr(istrip) >
+     $        average1+4*sd1)) ) then
+            srms(istrip,isili) = 0
          end if
       end do
 
-      read *,iasic
+
       iasic = 3
       first = 64*iasic+1
       last = 64*(iasic+1)
-      print *, array(first:last)
-      average = sum(array(first:last))/128.0
+      average = sum(array(first:last))/64.0
       sd = sqrt(sum(array(first:last)**2)/64.0 - average*average)
-      average1 = sum(snr(first:last))/128.0
+      average1 = sum(snr(first:last))/64.0
       sd1 = sqrt(sum(snr(first:last)**2)/64.0 - average1*average1)
       do istrip = first,last
-         if( (array(istrip) < average-4*sd).or.(array(istrip) >
-     $        average+4*sd).or.
-     $        (snr(istrip) < average1-3*sd1).or.(snr(istrip) >
-     $        average1+3*sd1) ) then
-            print *,isili,',',istrip,
-     $           average-4*sd,array(istrip),average+4*sd,',',
-     $           average1-3*sd1,snr(istrip),average1+3*sd1
-            srms(istrip,isili) = 1
+         if( .not.((array(istrip) < average-5*sd).or.(array(istrip) >
+     $        average+5*sd).or.
+     $        (snr(istrip) < average1-4*sd1).or.(snr(istrip) >
+     $        average1+4*sd1)) ) then
+            srms(istrip,isili) = 0
          end if
       end do
 
       iasic = 4
       first = 64*iasic+1
-      last = first+16
-      average = sum(array(first:last))/16.0
-      sd = sqrt(sum(array(first:last)**2)/16.0 - average*average)
-      average1 = sum(snr(first:last))/16.0
-      sd1 = sqrt(sum(snr(first:last)**2)/16.0 - average1*average1)
-*     print *,"Average:",average,average1,"Standard Deviation",sd,sd1
+      last = first+12
+      average = sum(array(first:last))/12.0
+      sd = sqrt(sum(array(first:last)**2)/12.0 - average*average)
+      average1 = sum(snr(first:last))/12.0
+      sd1 = sqrt(sum(snr(first:last)**2)/12.0 - average1*average1)
       do istrip = first,last
-         if( (array(istrip) < average-4*sd).or.(array(istrip) >
-     $        average+4*sd).or.
-     $        (snr(istrip) < average1-3*sd1).or.(snr(istrip) >
-     $        average1+3*sd1) ) then
-            print *,isili,',',istrip,
-     $           average-4*sd,array(istrip),average+4*sd,',',
-     $           average1-3*sd1,snr(istrip),average1+3*sd1
-            srms(istrip,isili) = 1
+         if( .not.((array(istrip) < average-5*sd).or.(array(istrip) >
+     $        average+5*sd).or.
+     $        (snr(istrip) < average1-4*sd1).or.(snr(istrip) >
+     $        average1+4*sd1)) ) then
+*            print *,isili,',',istrip,
+*     $           average-4*sd,array(istrip),average+4*sd,',',
+*     $           average1-3*sd1,snr(istrip),average1+3*sd1
+            srms(istrip,isili) = 0
          end if
       end do
 
