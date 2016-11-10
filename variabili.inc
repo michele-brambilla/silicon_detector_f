@@ -4,7 +4,8 @@
       common /data/subraw,imax
       common /cuts/pitch,x_conv,cut1,cut2
       common /xcluster/nrcluster,baricentro_mc,ampiezza_mc
-      common /xpede/subpede,subrms,nmax,istat,istatus,xavg
+      common /xpede/subpede,subrms,nmax,istat,istatus,xavg,statusfile,
+     $     pedefile
       common /efficenza/trk_tot,trk_buone,trk_fallite
       common /angoli/betax,betay
       
@@ -20,6 +21,8 @@
       real,parameter :: sigmay=0.1029
 
       character*50 output_dir
+      character*50 statusfile
+      character*50 pedefile
 
       integer istatus(Nstrip,Nsilicio)
 

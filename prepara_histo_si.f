@@ -30,12 +30,12 @@
       enddo
 
 *     PH e pull 2D per basculo per le 20 zone
-      call hbook2(310000,'PH-2d',20,0.5,20.5,1500,0.5,1500.5,0.)
-      call hbook2(310001,'Pull-2d',20,0.5,20.5,1500,0.5,1500.5,0.)
+      call hbook2(310000,'PH-2d',20,0.5,20.5,100,0.5,1000.5,0.)
+      call hbook2(310001,'Pull-2d',20,0.5,20.5,100,0.5,400.5,0.)
       
 *     pullL, pullR e ETA per basculo per le 20 zone
-      call hbook2(310002,'PullL-2d',20,0.5,20.5,1500,0.5,1500.5,0.)
-      call hbook2(310003,'PullR-2d',20,0.5,20.5,1500,0.5,1500.5,0.)
+      call hbook2(310002,'PullL-2d',20,0.5,20.5,100,0.5,400.5,0.)
+      call hbook2(310003,'PullR-2d',20,0.5,20.5,100,0.5,400.5,0.)
 *      call hbook2(310004,'eta-2d',20,0.5,20.5,200,-2.,2.,0.)
       call hbook2(310004,'eta-2d',20,0.5,20.5,50,-1.,1.,0.)
             

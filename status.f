@@ -10,9 +10,10 @@
 
       print *,''
       print *,'subroutine get_status'
+      print *,'file: ',statusfile
       print *,''
-      
-      open (1,file='status.dat',iostat=istat,status='old')
+
+      open (1,file=statusfile,iostat=istat,status='old')
 ********* se istat è diverso da 0 -->> significa che non è riuscito a leggere il file
       if(istat.ne.0) then
          close(1)

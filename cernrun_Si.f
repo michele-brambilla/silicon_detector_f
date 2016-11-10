@@ -33,9 +33,9 @@
       call hlimit(99999999)
       
 !     legge in "input" le informazioni per il run
-      call parse(nfilemax,firstrun,lastrun,output,output_dir,do_display)
+      call parse(nfilemax,firstrun,lastrun,output,output_dir,do_display
+     $     ,statusfile,pedefile)
 
-      
 ********************************************************      
 ********************************************************
 
@@ -191,16 +191,13 @@ cc               endif
 ***************************************************************************
 **** I4.4= 4caratteri su cui gira e.4 dice che se è <4 riempie a sx con 0
 
-      write(filename, "(A7,I6.6,A9)")
-     +     "rax/run",j,"_pede.dat"
-
-      print *,filename
-      open (unit=5,file=trim(filename)
+      print *,'pedestal file: ',pedefile
+      open (unit=5,file=trim(pedefile)
      +     ,iostat=istat,status='old')
 ********* se istat è =/ da 0 -->> significa che nn riesce a leggere il file
       if(istat.ne.0) then
          close(5)
-         print *,'Non ho trovato il file', trim(filename)
+         print *,'Non ho trovato il file', trim(pedefile)
          inew=1
          stop
       else
@@ -268,11 +265,13 @@ C
       
 
       subroutine parse(nfile,first,last,output,output_directory
-     $     ,do_displayevent)
+     $     ,do_displayevent,statusfile,pedefile)
       implicit none
       
       character*50 opt
       character*50 name
+      character*50 pedefile
+      character*50 statusfile
       character*50 output
       character*50 output_directory
       integer istat,first,last,nfile,do_displayevent
@@ -295,7 +294,12 @@ C
       name='last'
       call check_parse(name,opt,96,last,istat)
 
-
+      read(2,*), opt,pedefile
+      name='pedestal_file'
+      call check_parse_text(name,opt,pedefile,istat)
+      read(2,*), opt,statusfile
+      name='status_file'
+      call check_parse_text(name,opt,statusfile,istat)
       read(2,*), opt,output
       name='output'
       call check_parse_text(name,opt,output,istat)

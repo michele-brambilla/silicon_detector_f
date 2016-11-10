@@ -142,7 +142,7 @@ c     scrivo anche l'output formattato
       open(unit=10,file=trim(outfile),form='formatted')
       do isili=1,5
          do istrip=1,384
-            write(10,*), srms(istrip,isili)
+            write(10,*), int(srms(istrip,isili))
          end do
       end do
          

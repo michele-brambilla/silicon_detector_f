@@ -1,8 +1,10 @@
-nfilemax 1000
-first 100157
-last 100157
-output cernrun_si_100157.hbook
-output_directory run_10gev
+nfilemax 100
+first 100204
+last 100204
+pedestal_file "rax/run100203_pede.dat"
+status_file "rax/status100203_pede.dat"
+output "cernrun_si_100204.hbook"
+output_directory "run_10gev"
 display_event 0
 
 

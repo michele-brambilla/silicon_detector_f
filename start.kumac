@@ -1,15 +1,19 @@
-*hi/file 1 run_10gev/cernrun_si_100184.hbook 4096
-hi/file 1 run_10gev/cernrun_si_100159.hbook 4096
-opt stat
-opt logy
-hi/cr/sliy 310000 20
-hi/cr/sliy 310001 20
-hi/cr/sliy 310002 20
-hi/cr/sliy 310003 20
-hi/cr/sliy 310004 20
-hi/proj 310000
-hi/proj 310001
-hi/proj 310002
-hi/proj 310003
-hi/proj 310004
+macro start [id]
 
+      *hi/file 1 run_10gev/cernrun_si_100184.hbook 4096
+      
+      hi/file 1 run_10gev/cernrun_si_[id].hbook 4096
+      opt stat
+      opt logy
+      hi/cr/sliy 310000 20
+      hi/cr/sliy 310001 20
+      hi/cr/sliy 310002 20
+      hi/cr/sliy 310003 20
+      hi/cr/sliy 310004 20
+      hi/proj 310000
+      hi/proj 310001
+      hi/proj 310002
+      hi/proj 310003
+      hi/proj 310004
+
+      
